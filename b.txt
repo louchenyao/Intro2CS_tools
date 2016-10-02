@@ -1,0 +1,14 @@
+using i           register 1
+using minus1      register 2
+using tmp         register 3
+using zero        reigster 4
+using code-length FF
+
+load-pattern minus1 -1
+load-pattern i code-length
+tag start
+add i i minus
+load-memory tmp i
+store tmp 70+i
+jump zero 70
+jump i start
