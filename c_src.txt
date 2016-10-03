@@ -1,0 +1,83 @@
+# Copyright Chenyao2333
+
+using condition     register 0
+using problem_start register 11
+using tmp0          register 5
+using tmp1          register 6
+using load_mem_pos  register 7
+using store_mem_pos register 8
+using ins           register 9
+using i             register 1
+using one           register 4
+using two           register 13
+using n70           register 2
+using zero          register 12
+
+load-pattern one 1
+load-pattern two 2
+load-pattern i -2
+load-pattern n70 0x70
+
+# load-pattern problem_start 0
+
+tag while
+    add i i two
+
+    # load instruction from memory to tmp0 and tmp1
+    add load_mem_pos problem_start i
+    store load_mem_pos load_tag_0+1
+    tag load_tag_0
+    load-memory tmp0 0xAA
+
+    add load_mem_pos load_mem_pos one
+    store load_mem_pos load_tag_1+1
+    tag load_tag_1
+    load-memory tmp1 0xAA
+
+
+
+    # check if the tmp1(address) needs to add 70
+
+    # check if the ins is load-pattern problem_start
+    # the problem_start is register 11
+    # load-pattern condition 0x2B
+    # jump ins plus_70
+
+    # extract instruction
+    load-pattern ins 0xF0
+    and ins ins tmp0
+
+    # check if the ins is jump
+    load-pattern condition 0xB0
+    jump ins plus_70
+
+    # check if the ins is store
+    load-pattern condition 0x30
+    jump ins plus_70
+
+
+    tag write_back
+    # store the instructions into the destination
+    add store_mem_pos problem_start i
+    add store_mem_pos store_mem_pos n70
+    store store_mem_pos store_tag_0+1
+    tag store_tag_0
+    store tmp0 0xAA
+
+    add store_mem_pos store_mem_pos one
+    store store_mem_pos store_tag_1+1
+    tag store_tag_1
+    store tmp1 0xAA
+
+    load-pattern condition __code_length-2
+    jump i break
+jump condition while
+
+tag break
+add problem_start problem_start n70
+jump condition 0x70
+
+# function: add tmp1 with 0x70
+tag plus_70
+    add tmp1 tmp1 n70
+jump condition write_back

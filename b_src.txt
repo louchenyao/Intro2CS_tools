@@ -1,0 +1,27 @@
+# Copyright Chenyao2333
+
+using i           register 1
+using minus1      register 2
+using tmp         register 3
+using zero        register 0
+using to          register 5
+
+load-pattern minus1 -1
+load-pattern i __code_length
+tag start
+    add i i minus1
+
+    # read from memory into tmp
+    store i load_pos+1
+    tag load_pos
+    load-memory tmp 0xAA
+
+    # write back to memory with shift 0x70
+    load-pattern to 0x70
+    add to to i
+    store to store_pos+1
+    tag store_pos
+    store tmp 0xAA
+
+    jump i 0x70
+jump zero start
