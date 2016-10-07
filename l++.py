@@ -60,6 +60,7 @@ class Instruction(object):
         "load-pattern": 2,
         "store": 3,
         "add": 5,
+        "add-float": 6,
         "and": 8,
         "jump": 11,
     }
@@ -68,6 +69,7 @@ class Instruction(object):
         "load-pattern": "48",
         "store": "48",
         "add": "444",
+        "add-float": "444",
         "and": "444",
         "jump": "48",
     }
@@ -140,7 +142,7 @@ if __name__  == "__main__":
 
     args = parser.parse_args()
     args = vars(args)
-    
+
     with open(args["src_file"]) as f:
         src = f.read()
     output = compile(src)

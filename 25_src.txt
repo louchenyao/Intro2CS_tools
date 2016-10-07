@@ -1,0 +1,18 @@
+using sum register 0
+using a   register 1
+
+load-pattern sum 0
+
+load-memory a 0xA0
+add-float sum sum a
+
+load-memory a 0xA1
+add-float sum sum a
+
+load-memory a 0xA2
+add-float sum sum a
+
+load-memory a 0xA3
+add-float sum sum a
+
+store sum 0xA4
