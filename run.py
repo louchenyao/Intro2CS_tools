@@ -14,7 +14,7 @@ sys.stdout = fout
 
 sim = S.Simulator(0)
 sim.write("c.txt", 0)
-for i in range(0,10000):
+for i in range(0,3000):
     sim.executeOneStep()
     #sim.printMemory()
     #sim.printRegister()

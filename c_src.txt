@@ -18,7 +18,7 @@ load-pattern two 2
 load-pattern i -2
 load-pattern n70 0x70
 
-# load-pattern problem_start 0
+load-pattern problem_start 0
 
 tag while
     add i i two
@@ -40,8 +40,8 @@ tag while
 
     # check if the ins is load-pattern problem_start
     # the problem_start is register 11
-    # load-pattern condition 0x2B
-    # jump ins plus_70
+    load-pattern condition 0x2B
+    jump tmp0 plus_70
 
     # extract instruction
     load-pattern ins 0xF0
@@ -70,12 +70,12 @@ tag while
     store tmp1 0xAA
 
     load-pattern condition __code_length-2
-    jump i break
+    jump i 0x70
 jump condition while
 
-tag break
-add problem_start problem_start n70
-jump condition 0x70
+# tag break
+# add problem_start problem_start n70
+# jump condition 0x70
 
 # function: add tmp1 with 0x70
 tag plus_70
