@@ -1,24 +1,28 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Oct  3 13:03:49 2016
 
-@author: zhy
-"""
-
+import argparse
 import sys
 import Simulator as S
 
-fout = open("log.txt", "w")
-sys.stdout = fout
 
-sim = S.Simulator(0)
-sim.write("c.txt", 0)
-for i in range(0,3000):
-    sim.executeOneStep()
-    #sim.printMemory()
-    #sim.printRegister()
-
-#sim.execute(400)
-sim.printMemory()
-sim.printRegister()
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description = "Simulator for Machine Language")
+    parser.add_argument("source_file", type = str)
+    parser.add_argument("--pre_file", type = str, default = "")
+    parser.add_argument("--debug", action = "store_true")
+    args = parser.parse_args()
+    
+    sim = S.Simulator(0)
+    if args.debug:
+        if args.pre_file:
+            sim.preExecute(args.pre_file)
+        sim.load(args.source_file, 0)
+        while sim.executeOneStep():
+            sim.printMemory()
+            sim.printRegistor()
+            input("Press <Enter> to continue.")
+    else:
+        sim.execute(args.source_file, args.pre_file)
+        sim.printMemory()
+        sim.printRegistor()
